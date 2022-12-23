@@ -1,5 +1,6 @@
-import { type NextPage } from "next";
+import type { NextPage } from "next";
 import { useSession } from "next-auth/react";
+import AuthForm from "../components/auth/AuthForm";
 
 const Home: NextPage = () => {
 
@@ -12,7 +13,7 @@ const Home: NextPage = () => {
     }
 
     return (
-      <p>Hello world! Not signed in</p>
+      <AuthForm />
     );
 };
 

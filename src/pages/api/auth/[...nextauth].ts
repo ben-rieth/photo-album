@@ -1,43 +1,39 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import EmailProvider from "next-auth/providers/email";
 // Prisma adapter for NextAuth, optional and can be removed
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
-import sha256 from 'crypto-js/sha256';
 import { prisma } from "../../../server/db/client";
+import { env } from "../../../env/server.mjs";
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
+    adapter: PrismaAdapter(prisma),
     providers: [
-        CredentialsProvider({
-            name: 'Credentials',
-            credentials: {
-                username: {
-                    label: "Username",
-                    type: "text",
-                    placeholder: "Alison",
+        EmailProvider({
+            server: {
+                host: env.EMAIL_HOST,
+                port: Number(env.EMAIL_PORT),
+                auth: {
+                    user: env.EMAIL_USER,
+                    pass: env.EMAIL_PASS,
                 },
-                password: { label: "Password", type: "password" },
+                secure: true,
             },
-            authorize: async (credentials) => {
-                if (!credentials) return null;
-
-                const user = await prisma.user.findUnique({
-                    where: { username: credentials.username } 
-                });
-
-                if (user && 
-                    user.password && 
-                    user.password == sha256(credentials.password).toString()
-                  ) {
-                    return user;
-                } else {
-                    return null;
-                }
-            }
+            from: env.EMAIL_FROM,
+            maxAge: 10 * 60,
         })
     ],
-    session: { strategy: 'jwt' }
+    pages: {
+        signIn: '/',
+        error: '/',
+        verifyRequest: '/',
+        signOut: '/'
+    },
+    callbacks: {
+        async session({ session }) {
+            return session;
+        }
+    }
 };
 
 export default NextAuth(authOptions);
