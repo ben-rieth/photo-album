@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import { signIn } from 'next-auth/react';
 import toast from "react-hot-toast";
 import FormikInput from "./FormikInput";
-import ConfirmEmail from "./ConfrimEmail";
+import ConfirmEmail from "./ConfirmEmail";
 
 const schema = Yup.object().shape({
     email: Yup.string().email("Invalid Email").required('Email Required'),
