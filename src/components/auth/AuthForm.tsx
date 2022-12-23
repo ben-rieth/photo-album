@@ -1,5 +1,5 @@
 import { Formik, Form, type FormikValues } from "formik";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import * as Yup from 'yup';
 import { signIn } from 'next-auth/react';
 import toast from "react-hot-toast";
@@ -14,7 +14,7 @@ const AuthForm= () => {
     const [disabled, setDisabled] = useState<boolean>(false);
     const [confirm, setConfirm] = useState<boolean>(false);
 
-    const handleSubmit = async (values: FormikValues) => {
+    const handleSubmit = useCallback(async (values: FormikValues) => {
         setDisabled(true);
 
         const { email } = await schema.validate(values);
@@ -41,7 +41,7 @@ const AuthForm= () => {
         } finally {
             setDisabled(false);
         }
-    }
+    }, []);
 
     return (
         <Formik
