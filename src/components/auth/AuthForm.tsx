@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import { signIn } from 'next-auth/react';
 import toast from "react-hot-toast";
 import FormikInput from "./FormikInput";
+import ConfirmEmail from "./ConfrimEmail";
 
 const schema = Yup.object().shape({
     email: Yup.string().email("Invalid Email").required('Email Required'),
@@ -11,6 +12,7 @@ const schema = Yup.object().shape({
 
 const AuthForm= () => {
     const [disabled, setDisabled] = useState<boolean>(false);
+    const [confirm, setConfirm] = useState<boolean>(false);
 
     const handleSubmit = async (values: FormikValues) => {
         setDisabled(true);
@@ -21,14 +23,20 @@ const AuthForm= () => {
         try {
             toastId = toast.loading('Loading...');
 
-            await signIn('email', {
+            const result = await signIn('email', {
                 email,
                 redirect: false,
-                callbackUrl: '/'
             });
-
-            toast.dismiss(toastId);
+            
+            if (result && result.error) {
+                toast.error('Not authorized to sign in', { id: toastId });
+            } else {
+                setConfirm(true);
+                toast.dismiss(toastId);
+            }
+            
         } catch (err) {
+            console.log(err);
             toast.error('Unable to sign in', { id: toastId })
         } finally {
             setDisabled(false);
@@ -36,14 +44,14 @@ const AuthForm= () => {
     }
 
     return (
-        <div className="flex flex-col items-center mt-5">
-            <Formik
-                initialValues={{ email: ''}}
-                onSubmit={handleSubmit}
-                validationSchema={schema}
-            >
+        <Formik
+            initialValues={{ email: ''}}
+            onSubmit={handleSubmit}
+            validationSchema={schema}
+        >
+            {({ values }) => (
                 <Form
-                    className="flex flex-col items-center gap-5 mt-5"
+                    className="flex flex-col justify-center items-center gap-5 h-screen"
                     name="auth-form"
                 >
                     <h2 className="text-2xl font-bold text-sky-500">
@@ -65,10 +73,11 @@ const AuthForm= () => {
                     >
                         Sign in
                     </button>
+
+                    <ConfirmEmail email={values.email} visible={confirm} />
                 </Form>
-            </Formik>
-            
-        </div>
+            )}
+        </Formik>
     );
 }
 
