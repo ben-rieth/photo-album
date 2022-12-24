@@ -38,7 +38,7 @@ export const authOptions: NextAuthOptions = {
         async signIn({ user }) {
             try {
                 const result = await axios.post(
-                    `${clientEnv.NEXT_PUBLIC_URL}/api/users/allowed`,
+                    `${clientEnv.NEXT_PUBLIC_URL}/api/user/allowed`,
                     { email: user.email }
                 ).then(res => res.data);
                 if(!result.allowed) throw new Error();
