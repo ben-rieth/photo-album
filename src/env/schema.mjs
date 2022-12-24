@@ -23,7 +23,9 @@ export const serverSchema = z.object({
   EMAIL_PORT: z.string(),
   EMAIL_USER: z.string(),
   EMAIL_PASS: z.string(),
-  EMAIL_FROM: z.string().email()
+  EMAIL_FROM: z.string().email(),
+  SUPABASE_URL: z.string().url(),
+  SUPABASE_KEY: z.string()
 });
 
 /**
@@ -32,7 +34,7 @@ export const serverSchema = z.object({
  * To expose them to the client, prefix them with `NEXT_PUBLIC_`.
  */
 export const clientSchema = z.object({
-  NEXT_PUBLIC_URL: z.string(),
+  NEXT_PUBLIC_URL: z.string().url(),
 });
 
 /**
