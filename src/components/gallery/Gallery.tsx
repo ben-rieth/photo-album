@@ -7,7 +7,7 @@ type GalleryProps = {
 
 const Gallery: FC<GalleryProps> = ({ urls }) => {
     return (
-        <div>
+        <div className="grid grid-cols-2">
             {urls && urls.map((url, index) => {
                 return (
                     <div 

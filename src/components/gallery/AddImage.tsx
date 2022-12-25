@@ -1,6 +1,5 @@
 import axios from 'axios';
-import { Form, Formik, FormikHelpers, type FormikValues } from 'formik';
-import { type FC, useState, FormEvent, ChangeEvent } from 'react';
+import { type FC, useState, type FormEvent, type ChangeEvent } from 'react';
 import toast from 'react-hot-toast';
 import * as yup from 'yup';
 
@@ -29,12 +28,12 @@ const AddImage : FC<AddImageProps> = ({ albumId }) => {
 
         reader.addEventListener('load', async () => {
             setImgSrc(reader.result as string);
-            setFile(e.target.value);
         }, false);
 
         if (file) {
             if (file.size <= 10 * 1024 * 1024) {
                 reader.readAsDataURL(file);
+                setFile(e.target.value);
             }
         }
     }
@@ -59,17 +58,22 @@ const AddImage : FC<AddImageProps> = ({ albumId }) => {
             toast.error('Unable to upload', { id: toastId })
         } finally {
             setDisabled(false);
+            setFile('');
         }
     }
 
     return (
         <form onSubmit={handleSubmit}>
+            <label className="block" htmlFor="picture">Choose Image to Upload</label>
+            <p>Current File: {file}</p>
             <input 
+                id="picture"
                 disabled={disabled}
                 type="file"
                 accept="image/*"
                 value={file}
                 onChange={handleImageChange}
+                className="text-transparent"
             />
             <button type='submit'>
                 Submit Photo
