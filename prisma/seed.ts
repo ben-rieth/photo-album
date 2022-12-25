@@ -8,6 +8,16 @@ const main = async () => {
 
     await prisma.$transaction([deletePhotos, deleteAlbums]);
 
+    // await prisma.whitelist.create({
+    //     data: { email: 'benrieth3@gmail.com' }
+    // });
+
+    // await prisma.user.create({
+    //     data: {
+    //         email: 'benrieth3@gmail.com'
+    //     }
+    // });
+
     await prisma.album.create({
         data: {
             name: 'Benji & Alison',
@@ -23,7 +33,7 @@ const main = async () => {
                 }
             }
         }
-    })
+    });
 };
 
 main()

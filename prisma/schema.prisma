@@ -15,18 +15,24 @@ datasource db {
 }
 
 model Photo {
-  id       String @id @default(cuid())
-  albumId  String
-  filename String
+  id        String   @id @default(cuid())
+  albumId   String
+  filename  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tags      String[]
 
-  album   Album @relation(fields: [albumId], references: [id])
+  album   Album      @relation(fields: [albumId], references: [id])
 }
 
 model Album {
-  id     String @id @default(cuid())
-  name   String
-  users  User[]
-  photos Photo[]
+  id        String   @id @default(cuid())
+  name      String
+  users     User[]
+  photos    Photo[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Whitelist {

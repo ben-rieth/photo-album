@@ -1,25 +1,20 @@
 import type { GetServerSideProps, NextPage } from "next";
-import Image from 'next/image';
+import AddImage from "../../components/gallery/AddImage";
+import Gallery from "../../components/gallery/Gallery";
 import { getServerAuthSession } from "../../server/common/get-server-auth-session";
 import { prisma, supabase } from '../../server/db/client';
 
 type AlbumPageProps = {
-    urls: string[]
+    urls: string[];
+    albumId: string;
 }
 
-const AlbumPage: NextPage<AlbumPageProps> = ({ urls }) => {
+const AlbumPage: NextPage<AlbumPageProps> = ({ urls, albumId }) => {
     return (
-        <div>
-            {urls && urls.map((url, index) => {
-                return (<Image 
-                    key={`gallery-${index}`}
-                    src={url}
-                    alt=""
-                    width={100}
-                    height={100}
-                />)
-            })}
-        </div>
+        <>
+            <AddImage albumId={albumId} />
+            <Gallery urls={urls}/>
+        </>
     );
 }
 
@@ -53,7 +48,8 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
     const urls = data ? data.map((obj) => obj.signedUrl) : [];
     return {
         props: {
-            urls
+            urls,
+            albumId: slug
         }
     }
 }
