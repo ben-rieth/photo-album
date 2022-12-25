@@ -20,7 +20,7 @@ model Photo {
   filename  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  tags      String[]
+  tags      String[] 
 
   album   Album      @relation(fields: [albumId], references: [id])
 }
@@ -30,6 +30,7 @@ model Album {
   name      String
   users     User[]
   photos    Photo[]
+  tags      String[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

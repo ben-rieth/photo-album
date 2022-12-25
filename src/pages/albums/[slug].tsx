@@ -1,20 +1,27 @@
+import { truncate } from "fs/promises";
 import type { GetServerSideProps, NextPage } from "next";
-import AddImage from "../../components/gallery/AddImage";
 import Gallery from "../../components/gallery/Gallery";
 import { env } from "../../env/server.mjs";
 import { getServerAuthSession } from "../../server/common/get-server-auth-session";
 import { prisma } from '../../server/db/client';
 
 type AlbumPageProps = {
-    urls: string[];
-    albumId: string;
+    photos: {
+        url: string;
+        tags: string[];
+        createdAt: string;
+    }[];
+    tags: string[];
+    name: string;
 }
 
-const AlbumPage: NextPage<AlbumPageProps> = ({ urls, albumId }) => {
+const AlbumPage: NextPage<AlbumPageProps> = ({ photos, name, tags }) => {
     return (
         <>
-            <AddImage albumId={albumId} />
-            <Gallery urls={urls} />
+            <h1 className="text-center text-2xl font-bold">
+                {name}
+            </h1>
+            <Gallery photos={photos} tags={tags} />
         </>
     );
 }
@@ -36,10 +43,30 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
 
     const slug = params.slug as string;
 
-    const pictures = await prisma.photo.findMany({
-        where: { albumId: slug }
+    // const pictures = await prisma.photo.findMany({
+    //     where: { albumId: slug }
+    // });
+
+    const album = await prisma.album.findUnique({
+        where: { id: slug },
+        include: { photos: true }
     });
-    const urls = pictures ? pictures.map(picture => `${env.SUPABASE_STORAGE_URL}/albums/${slug}/${picture.filename}`) : [];
+
+    if (!album) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            }
+        };
+    }
+
+    const photos = album.photos.map(photo => {
+        return {
+            tags: photo.tags,
+            createdAt: photo.createdAt.toISOString(),
+            url: `${env.SUPABASE_STORAGE_URL}/albums/${slug}/${photo.filename}`
+        }});
 
     // const { data } = await supabase
     //     .storage.from('albums')
@@ -49,8 +76,9 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
 
     return {
         props: {
-            urls,
-            albumId: slug
+            photos,
+            tags: album.tags,
+            name: album.name,
         }
     }
 }
