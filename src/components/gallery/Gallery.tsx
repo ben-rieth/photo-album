@@ -7,7 +7,7 @@ type GalleryProps = {
 
 const Gallery: FC<GalleryProps> = ({ urls }) => {
     return (
-        <div className="grid grid-cols-2">
+        <div className="grid grid-cols-1 mx-10 my-5 gap-3">
             {urls && urls.map((url, index) => {
                 return (
                     <div 
@@ -19,6 +19,7 @@ const Gallery: FC<GalleryProps> = ({ urls }) => {
                             alt=""
                             fill
                             className="object-cover rounded-lg"
+                            priority={index <= 5}
                         />
                     </div>
                 )
