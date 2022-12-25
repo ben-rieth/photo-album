@@ -2,6 +2,9 @@ import { type FC, useState, type RefObject } from 'react';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import GalleryImage from './GalleryImage';
 
+import classNames from 'classnames';
+import GridSizeSelector from './GridSizeSelector';
+
 type Photo = {
     url: string;
     tags: string[];
@@ -19,8 +22,8 @@ type GalleryProps = {
 
 const Gallery: FC<GalleryProps> = ({ photos, tags }) => {
 
-    // const [selectedTag, setSelectedTag] = useState<string | undefined>(undefined);
     const [filteredImages, setFilteredImages] = useState<Photo[]>(photos);
+    const [gridSize, setGridSize] = useState<number>(1);
 
     const filterItems = async (filter: string) => {
         setFilteredImages([]);
@@ -30,12 +33,17 @@ const Gallery: FC<GalleryProps> = ({ photos, tags }) => {
         
     }
 
-    // const [images, setImages] = useState<any[]>();
-
-    // const images = photos.map((photo, index) => 
-    //     <GalleryImage url={photo.url} key={`gallery-${index}`}/>);
-
     const [animateRef] = useAutoAnimate();
+
+    const galleryClasses = classNames(
+        "relative grid gap-3 mx-3 my-3",
+        {
+            "grid-cols-1": gridSize === 1,
+            "grid-cols-2": gridSize === 2,
+            "grid-cols-3": gridSize === 3,
+            "grid-cols-4": gridSize === 4,
+        }
+    );
 
     return (
         <main>
@@ -56,9 +64,15 @@ const Gallery: FC<GalleryProps> = ({ photos, tags }) => {
                 </li>
             </ul>
 
-            <div className="grid grid-cols-2 gap-3 mx-3 my-3" ref={animateRef as RefObject<HTMLDivElement>}>
+            <GridSizeSelector handleChange={(size: number) => setGridSize(size) }/>
+
+            <div className={galleryClasses} ref={animateRef as RefObject<HTMLDivElement>}>
                 {filteredImages.map((photo, index) => (
-                    <GalleryImage url={photo.url} key={`gallery-${index}`}/>)
+                    <GalleryImage 
+                        url={photo.url} 
+                        key={`gallery-${index}`}
+                        gridSize={gridSize}
+                    />)
                 )}
             </div>
         </main>
