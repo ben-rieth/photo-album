@@ -4,6 +4,7 @@ import GalleryImage from './GalleryImage';
 
 import classNames from 'classnames';
 import GridSizeSelector from './GridSizeSelector';
+import TagMenu from './TagMenu';
 
 type Photo = {
     url: string;
@@ -25,10 +26,15 @@ const Gallery: FC<GalleryProps> = ({ photos, tags }) => {
     const [filteredImages, setFilteredImages] = useState<Photo[]>(photos);
     const [gridSize, setGridSize] = useState<number>(1);
 
-    const filterItems = async (filter: string) => {
+    const filterItems = async (filter: string | undefined) => {
         setFilteredImages([]);
+        
         setTimeout(() => {
-            setFilteredImages(photos.filter((photo) => photo.tags.includes(filter)));
+            if (filter) {
+                setFilteredImages(photos.filter((photo) => photo.tags.includes(filter)));
+            } else {
+                setFilteredImages(photos);
+            }
         }, 250)
         
     }
@@ -47,22 +53,7 @@ const Gallery: FC<GalleryProps> = ({ photos, tags }) => {
 
     return (
         <main>
-            <ul>
-                {tags.map((tag) => (
-                    <li key={tag}>
-                        <button 
-                            onClick={() => filterItems(tag)}
-                        >
-                            {tag}
-                        </button>
-                    </li>
-                ))}
-                <li>
-                    <button onClick={() => setFilteredImages(photos)}>
-                        None
-                    </button>
-                </li>
-            </ul>
+            <TagMenu tags={tags} handleClick={filterItems}/>
 
             <GridSizeSelector handleChange={(size: number) => setGridSize(size) }/>
 
