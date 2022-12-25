@@ -2,10 +2,11 @@ import Image from 'next/image';
 import type { FC } from 'react';
 
 type GalleryProps = {
-    urls: string[];
+    urls:  string[];
 }
 
 const Gallery: FC<GalleryProps> = ({ urls }) => {
+
     return (
         <div className="grid grid-cols-2">
             {urls && urls.map((url, index) => {
