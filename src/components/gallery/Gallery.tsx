@@ -1,14 +1,15 @@
-import { type FC, useState, type RefObject } from 'react';
+import { type FC, useState, type RefObject, useEffect } from 'react';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import GalleryImage from './GalleryImage';
 
 import classNames from 'classnames';
 import GridSizeSelector from './GridSizeSelector';
-import TagMenu from './TagMenu';
 import type { PhotoWithUrl } from '../../types/Photo';
 import GalleryHeader from './GalleryHeader';
 import useDontScrollOnCondition from '../../hooks/useDontScrollOnCondition';
 import ImageModal from './ImageModal';
+import { useAtom } from 'jotai';
+import { filterAtom, tagsAtom } from '../../store/filter';
 
 type GalleryProps = {
     photos: PhotoWithUrl[];
@@ -22,11 +23,17 @@ const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
     const [gridSize, setGridSize] = useState<number>(1);
     const [activeImage, setActiveImage] = useState<PhotoWithUrl | undefined>(undefined);
 
-    const [animateRef] = useAutoAnimate();
+    const [filter, setFilter] = useAtom(filterAtom);
+    const [, setTags] = useAtom(tagsAtom);
 
-    useDontScrollOnCondition(!!activeImage && gridSize !== 1);
+    // on initial load set the filter to undefined and the tags to the album tags
+    useEffect(() => {
+        setFilter(undefined);
+        setTags(tags);
+    }, [setFilter, setTags, tags]);
 
-    const filterItems = async (filter: string | undefined) => {
+    // change displayed images when the tag filter is changed
+    useEffect(() => {
         setFilteredImages([]);
         setTimeout(() => {
             if (filter) {
@@ -37,7 +44,11 @@ const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
                 setFilteredImages(photos);
             }
         }, 250)
-    }
+    }, [filter, photos]);
+
+    const [animateRef] = useAutoAnimate();
+
+    useDontScrollOnCondition(!!activeImage && gridSize !== 1);
 
     const handleActive = (id: string | undefined) => {
         if (!id) setActiveImage(undefined);
@@ -57,8 +68,6 @@ const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
     return (
         <main>
             <GalleryHeader title={name} />
-
-            <TagMenu tags={tags} handleClick={filterItems}/>
 
             <GridSizeSelector 
                 handleChange={(size: number) => {

@@ -1,33 +1,51 @@
 import classNames from "classnames";
-import { type FC } from "react";
+import { useAtom } from "jotai";
+import { ChangeEvent, type FC } from "react";
+import { filterAtom, tagsAtom } from "../../store/filter";
 
-type TagMenuProps = {
-    tags: string[];
-    handleClick: (filter: string | undefined) => void;
-}
+const TagMenu = () => {
+    
+    const [filter, setFilter] = useAtom(filterAtom);
+    const [tags] = useAtom(tagsAtom);
 
-const TagMenu:FC<TagMenuProps> = ({ tags, handleClick }) => {
-    const optionClasses = classNames(
-        "w-fit bg-sky-400 rounded-2xl py-2 px-4 cursor-pointer hover:bg-white hover:ring-2 hover:ring-sky-400"
-    );
+    const onValueChange = (event: ChangeEvent<HTMLInputElement>) => {
+        console.log(event.target.id);
+        if (event.target.id === 'none') {
+            setFilter(undefined);
+            return;
+        }
+        
+        setFilter(event.target.id);
+    }
     
     return (
-        <ul className="mx-5 flex flex-wrap content-center justify-start gap-5">
-            {tags.map((tag) => (
-                <li key={tag} className={optionClasses}>
-                    <button 
-                        onClick={() => handleClick(tag)}
-                    >
-                        {tag}
-                    </button>
-                </li>
-            ))}
-            <li className={optionClasses}>
-                <button onClick={() => handleClick(undefined)}>
-                    None
-                </button>
-            </li>
-        </ul>
+        <fieldset className="text-black">
+            <legend>Filter By Tags</legend>
+            <div onChange={onValueChange}>
+                {tags.map((tag) => (
+                    <div key={`tagOption-${tag}`} className="flex items-center gap-2">
+                        <input 
+                            type="radio" 
+                            id={tag} 
+                            name="photoTags"
+                            checked={filter === tag}
+                            readOnly
+                        />
+                        <label htmlFor={tag}>{tag}</label>
+                    </div>
+                ))}
+                <div key={`tagOption-none`} className="flex items-center gap-2">
+                    <input 
+                        type="radio" 
+                        id="none" 
+                        name="photoTags"
+                        checked={!filter}
+                        readOnly
+                    />
+                    <label htmlFor="none">none</label>
+                </div>
+            </div>
+        </fieldset>
     )
 }
 
