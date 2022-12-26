@@ -27,7 +27,7 @@ const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
     const ref = useRef<HTMLDivElement>();
     useDetectOutsideClick(ref as RefObject<HTMLDivElement>, () => setActiveImage(undefined));
 
-    useDontScrollOnCondition(!!activeImage);
+    useDontScrollOnCondition(!!activeImage && gridSize !== 1);
 
     const filterItems = async (filter: string | undefined) => {
         setFilteredImages([]);
