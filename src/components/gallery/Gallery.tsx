@@ -8,6 +8,7 @@ import TagMenu from './TagMenu';
 import type { PhotoWithUrl } from '../../types/Photo';
 import useDetectOutsideClick from '../../hooks/useDetectOutsideClick';
 import GalleryHeader from './GalleryHeader';
+import useDontScrollOnCondition from '../../hooks/useDontScrollOnCondition';
 
 type GalleryProps = {
     photos: PhotoWithUrl[];
@@ -21,12 +22,15 @@ const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
     const [gridSize, setGridSize] = useState<number>(1);
     const [activeImage, setActiveImage] = useState<PhotoWithUrl | undefined>(undefined);
 
+    const [animateRef] = useAutoAnimate();
+
     const ref = useRef<HTMLDivElement>();
     useDetectOutsideClick(ref as RefObject<HTMLDivElement>, () => setActiveImage(undefined));
 
+    useDontScrollOnCondition(!!activeImage);
+
     const filterItems = async (filter: string | undefined) => {
         setFilteredImages([]);
-        
         setTimeout(() => {
             if (filter) {
                 setFilteredImages(
@@ -36,10 +40,12 @@ const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
                 setFilteredImages(photos);
             }
         }, 250)
-        
     }
 
-    const [animateRef] = useAutoAnimate();
+    const handleActive = (id: string | undefined) => {
+        if (!id) setActiveImage(undefined);
+        setActiveImage(photos.find(photo => photo.id === id));
+    }
 
     const galleryClasses = classNames(
         "relative grid gap-3 mx-5 my-3",
@@ -48,13 +54,10 @@ const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
             "grid-cols-2": gridSize === 2,
             "grid-cols-3": gridSize === 3,
             "grid-cols-4": gridSize === 4,
-        }
+        },
     );
 
-    const handleActive = (id: string | undefined) => {
-        if (!id) setActiveImage(undefined);
-        setActiveImage(photos.find(photo => photo.id === id));
-    }
+    
 
     return (
         <main>
@@ -83,7 +86,7 @@ const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
 
             {activeImage && gridSize > 1 &&
                 <>
-                    <div className="bg-white p-5 w-80 absolute top-10 left-1/2 -translate-x-1/2 z-20">
+                    <div className="bg-white p-5 w-80 fixed top-10 left-1/2 -translate-x-1/2 z-20">
                         <div 
                             ref={ref as RefObject<HTMLDivElement>}
                             className="w-full"
