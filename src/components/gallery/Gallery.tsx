@@ -1,4 +1,4 @@
-import { type FC, useState, type RefObject, useRef } from 'react';
+import { type FC, useState, type RefObject } from 'react';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import GalleryImage from './GalleryImage';
 
@@ -6,9 +6,9 @@ import classNames from 'classnames';
 import GridSizeSelector from './GridSizeSelector';
 import TagMenu from './TagMenu';
 import type { PhotoWithUrl } from '../../types/Photo';
-import useDetectOutsideClick from '../../hooks/useDetectOutsideClick';
 import GalleryHeader from './GalleryHeader';
 import useDontScrollOnCondition from '../../hooks/useDontScrollOnCondition';
+import ImageModal from './ImageModal';
 
 type GalleryProps = {
     photos: PhotoWithUrl[];
@@ -23,9 +23,6 @@ const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
     const [activeImage, setActiveImage] = useState<PhotoWithUrl | undefined>(undefined);
 
     const [animateRef] = useAutoAnimate();
-
-    const ref = useRef<HTMLDivElement>();
-    useDetectOutsideClick(ref as RefObject<HTMLDivElement>, () => setActiveImage(undefined));
 
     useDontScrollOnCondition(!!activeImage && gridSize !== 1);
 
@@ -57,8 +54,6 @@ const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
         },
     );
 
-    
-
     return (
         <main>
             <GalleryHeader title={name} />
@@ -84,24 +79,11 @@ const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
                 )}
             </div>
 
-            {activeImage && gridSize > 1 &&
-                <>
-                    <div className="bg-white p-5 w-80 fixed top-10 left-1/2 -translate-x-1/2 z-20">
-                        <div 
-                            ref={ref as RefObject<HTMLDivElement>}
-                            className="w-full"
-                        >
-                            <GalleryImage 
-                                photo={activeImage}
-                                gridSize={gridSize}
-                                active={false}
-                            />
-                        </div>
-                        <p className="text-sm">Lorem ipsum</p>
-                    </div>
-                    <div className="fixed w-screen h-screen bg-black/80 z-10 top-0 left-0"/>
-                </>
-            }
+            <ImageModal 
+                photo={activeImage} 
+                isOpen={!!activeImage && gridSize > 1}
+                onClose={() => setActiveImage(undefined)}
+            />
         </main>
     )
 };
