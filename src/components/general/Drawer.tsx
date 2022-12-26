@@ -14,34 +14,49 @@ const Drawer:FC<DrawerProps> = ({ open, handleClose }) => {
     useDontScrollOnCondition(open);
 
     const drawerClasses = classNames(
-        "fixed top-0 left-0 w-full z-30 h-full",
-        "transform ease-in-out transition-transform duration-500",
-        "bg-white/70 backdrop-blur-md",
+        "fixed top-0 left-0 w-3/4 z-30 h-full",
+        "transform transition-transform duration-500",
+        "bg-white backdrop-blur-md",
         "text-neutral-900 dark:text-neutral-100",
         {
-            "translate-x-0" : open,
-            "-translate-x-full": !open
+            "translate-x-0 ease-out" : open,
+            "-translate-x-full ease-in": !open
         }
     );
 
     const closeClasses = classNames(
-        "fixed top-4 right-4 cursor-pointer fill-black",
+        "fixed top-4 right-4 cursor-pointer fill-white z-30 transition-opacity duration-500",
         "h-12 w-12 ml-2",
         {
-            "hidden": !open
-        },
+            "opacity-0 pointer-events-none ease-in": !open,
+            "opacity-100 ease-out": open,
+        }
     );
 
+    const overlayClasses = classNames(
+        "fixed bg-black top-0 left-0 w-full h-full z-20 transition-opacity duration-500",
+        {
+            "opacity-0 pointer-events-none ease-in": !open,
+            "opacity-50 ease-out": open,
+        }
+    )
+
     return (
-        <aside className={drawerClasses}>
+        <>
+            <aside className={drawerClasses}>
+                <ul className="mt-20 ml-14 text-3xl md:text-5xl w-64">
+                    <TagMenu />
+                </ul>
+            </aside>
             <AiOutlineClose 
                 className={closeClasses}
                 onClick={handleClose}
             />
-            <ul className="mt-20 ml-14 text-3xl md:text-5xl w-64">
-                <TagMenu />
-            </ul>
-        </aside>
+            <div 
+                className={overlayClasses}
+                onClick={handleClose}
+            />
+        </>
     )
 };
 
