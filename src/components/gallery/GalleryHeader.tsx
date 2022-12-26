@@ -18,13 +18,18 @@ const GalleryHeader:FC<GalleryHeaderProps> = ({ title }) => {
             <Link href='/'>
                 <AiOutlineLeft className="w-6 h-6"/>
             </Link>
-            <h1 className="text-3xl flex-1">
+            <h1 className="text-2xl md:text-4xl flex-1">
                 {title}
             </h1>
             <IoOptionsOutline 
                 className="w-8 h-8 md:hidden" 
                 onClick={() => setDrawerOpen(true)}
             />
+            <ul className="hidden md:flex text-2xl">
+                <Link href="/">
+                    <p>Album List</p>
+                </Link>
+            </ul>
 
             <Drawer 
                 open={drawerOpen} 

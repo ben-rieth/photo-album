@@ -13,9 +13,7 @@ type AlbumPageProps = {
 
 const AlbumPage: NextPage<AlbumPageProps> = ({ photos, name, tags }) => {
     return (
-        <>
-            <Gallery photos={photos} tags={tags} name={name} />
-        </>
+        <Gallery photos={photos} tags={tags} name={name} />
     );
 }
 

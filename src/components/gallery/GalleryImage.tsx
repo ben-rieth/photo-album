@@ -14,10 +14,7 @@ type GalleryImageProps = {
 
 const GalleryImage:FC<GalleryImageProps> = ({ photo, gridSize, active, handleActive=() => { /* */} }) => {
 
-    // const [active, setActive] = useState<boolean>(false);
-
     const [ref] = useAutoAnimate();
-    // useDetectOutsideClick(ref as RefObject<HTMLDivElement>, () => setActive(false));
 
     const executeScroll = () => ref.current?.scrollIntoView();
 
@@ -36,19 +33,6 @@ const GalleryImage:FC<GalleryImageProps> = ({ photo, gridSize, active, handleAct
         }
         else handleActive(undefined);
     }
-
-    // const containerClasses = classNames(
-    //     "transition-transform duration-400 z-10",
-    //     {
-    //         "translate-x-0 scale-100": !active,
-    //         "origin-top-left": position === 'left',
-    //         "translate-x-1/4": active && position === 'left',
-    //         "origin-top-right": position === 'right',
-    //         "-translate-x-1/4 -translate-y-1/4": active && position === 'right',
-    //         "scale-150 z-50": active,
-    //         "origin-top-center": position === 'center',
-    //     }
-    // );
 
 
     return (

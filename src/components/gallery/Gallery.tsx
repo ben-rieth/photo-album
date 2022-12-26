@@ -57,7 +57,7 @@ const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
     }
 
     const galleryClasses = classNames(
-        "relative grid gap-3 mx-5 my-3 flex-1",
+        "grid gap-5 flex-1",
         {
             "grid-cols-1": gridSize === 1,
             "grid-cols-2": gridSize === 2,
@@ -67,11 +67,13 @@ const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
     );
 
     return (
-        <main>
+        <main className="w-screen relative">
             <GalleryHeader title={name} />
-            <div className="flex">
-                <aside className="w-64 hidden md:block">
+            <div className="flex relative">
+                <aside className="basis-64 shrink-0 hidden md:block px-5 sticky top-5 h-fit">
+                    <h2 className="text-3xl">Display Options</h2>
                     <TagMenu />
+                    <GridSizeSelector />
                 </aside>
                 <div className={galleryClasses} ref={animateRef as RefObject<HTMLDivElement>}>
                     {filteredImages.map((photo, index) => (
@@ -86,7 +88,6 @@ const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
                 </div>
             </div>
             
-
             <ImageModal 
                 photo={activeImage} 
                 isOpen={!!activeImage && gridSize > 1}
