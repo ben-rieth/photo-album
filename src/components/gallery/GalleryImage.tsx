@@ -31,7 +31,7 @@ const GalleryImage:FC<GalleryImageProps> = ({ photo, gridSize, active, handleAct
 
     const handleClick = () => {
         if (!active) {
-            executeScroll();
+            if (gridSize === 1) executeScroll();
             handleActive(photo.id);
         }
         else handleActive(undefined);
