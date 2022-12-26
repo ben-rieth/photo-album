@@ -57,17 +57,17 @@ const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
     }
 
     const galleryClasses = classNames(
-        "grid gap-5 flex-1",
+        "grid flex-1 mx-5",
         {
-            "grid-cols-1": gridSize === 1,
-            "grid-cols-2": gridSize === 2,
-            "grid-cols-3": gridSize === 3,
-            "grid-cols-4": gridSize === 4,
+            "grid-cols-1 gap-5": gridSize === 1,
+            "grid-cols-2 gap-5": gridSize === 2,
+            "grid-cols-3 gap-3": gridSize === 3,
+            "grid-cols-4 gap-3": gridSize === 4,
         },
     );
 
     return (
-        <main className="w-screen relative">
+        <main className="w-full relative">
             <GalleryHeader title={name} />
             <div className="flex relative">
                 <aside className="basis-64 shrink-0 hidden md:block px-5 sticky top-5 h-fit">

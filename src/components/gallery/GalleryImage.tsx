@@ -19,7 +19,7 @@ const GalleryImage:FC<GalleryImageProps> = ({ photo, gridSize, active, handleAct
     const executeScroll = () => ref.current?.scrollIntoView();
 
     const imgClasses = classNames(
-        "relative aspect-square overflow-hidden",
+        "aspect-square overflow-hidden",
         {
             "rounded-lg": !active || gridSize > 1,
             "rounded-t-lg": active,
