@@ -48,6 +48,7 @@ const Gallery: FC<GalleryProps> = ({ photos, tags }) => {
     );
 
     const handleActive = (id: string | undefined) => {
+        if (!id) setActiveImage(undefined);
         setActiveImage(photos.find(photo => photo.id === id));
     }
 
@@ -75,16 +76,22 @@ const Gallery: FC<GalleryProps> = ({ photos, tags }) => {
             </div>
 
             {activeImage && gridSize > 1 &&
-                <div 
-                    ref={ref as RefObject<HTMLDivElement>}
-                    className="absolute top-0 left-0 w-64 h-64 border-4 border-black"
-                >
-                    <GalleryImage 
-                        photo={activeImage}
-                        gridSize={gridSize}
-                        active={false}
-                    />
-                </div>
+                <>
+                    <div className="bg-white p-5 w-80 absolute top-10 left-1/2 -translate-x-1/2 z-20">
+                        <div 
+                            ref={ref as RefObject<HTMLDivElement>}
+                            className="w-full"
+                        >
+                            <GalleryImage 
+                                photo={activeImage}
+                                gridSize={gridSize}
+                                active={false}
+                            />
+                        </div>
+                        <p className="text-sm">Lorem ipsum</p>
+                    </div>
+                    <div className="fixed w-screen h-screen bg-black/80 z-10 top-0 left-0"/>
+                </>
             }
         </main>
     )

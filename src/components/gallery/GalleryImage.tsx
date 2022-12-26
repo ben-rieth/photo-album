@@ -1,9 +1,8 @@
-import { type FC, useState, type RefObject } from "react";
+import { RefObject, type FC } from "react";
 import Image from 'next/image';
 import classNames from "classnames";
-import useDetectOutsideClick from "../../hooks/useDetectOutsideClick";
-import { useAutoAnimate } from "@formkit/auto-animate/react";
 import type { PhotoWithUrl } from "../../types/Photo";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 type GalleryImageProps = {
     photo: PhotoWithUrl
@@ -17,7 +16,7 @@ const GalleryImage:FC<GalleryImageProps> = ({ photo, gridSize, active, handleAct
 
     // const [active, setActive] = useState<boolean>(false);
 
-    // const [ref] = useAutoAnimate();
+    const [ref] = useAutoAnimate();
     // useDetectOutsideClick(ref as RefObject<HTMLDivElement>, () => setActive(false));
 
     const imgClasses = classNames(
@@ -59,7 +58,7 @@ const GalleryImage:FC<GalleryImageProps> = ({ photo, gridSize, active, handleAct
             <div 
                 className={imgClasses}
                 onClick={handleClick}
-                //ref={ref as RefObject<HTMLDivElement>}
+                ref={ref as RefObject<HTMLDivElement>}
             >
                 <Image 
                     src={photo.url}
