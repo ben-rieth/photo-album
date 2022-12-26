@@ -7,13 +7,15 @@ import GridSizeSelector from './GridSizeSelector';
 import TagMenu from './TagMenu';
 import type { PhotoWithUrl } from '../../types/Photo';
 import useDetectOutsideClick from '../../hooks/useDetectOutsideClick';
+import GalleryHeader from './GalleryHeader';
 
 type GalleryProps = {
     photos: PhotoWithUrl[];
     tags: string[];
+    name: string;
 }
 
-const Gallery: FC<GalleryProps> = ({ photos, tags }) => {
+const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
 
     const [filteredImages, setFilteredImages] = useState<PhotoWithUrl[]>(photos);
     const [gridSize, setGridSize] = useState<number>(1);
@@ -27,7 +29,9 @@ const Gallery: FC<GalleryProps> = ({ photos, tags }) => {
         
         setTimeout(() => {
             if (filter) {
-                setFilteredImages(photos.filter((photo) => photo.tags.includes(filter)));
+                setFilteredImages(
+                    photos.filter((photo) => photo.tags.includes(filter))
+                );
             } else {
                 setFilteredImages(photos);
             }
@@ -54,6 +58,8 @@ const Gallery: FC<GalleryProps> = ({ photos, tags }) => {
 
     return (
         <main>
+            <GalleryHeader title={name} />
+
             <TagMenu tags={tags} handleClick={filterItems}/>
 
             <GridSizeSelector 

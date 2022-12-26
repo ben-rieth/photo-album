@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { type FC, useState } from "react"
+import { type FC } from "react";
 
 type TagMenuProps = {
     tags: string[];
