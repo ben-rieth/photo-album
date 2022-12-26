@@ -9,15 +9,16 @@ type GalleryImageProps = {
     photo: PhotoWithUrl
     position?: "left" | "center" | "right";
     gridSize: number;
-    handleActive?: (id: string) => void;
+    active: boolean;
+    handleActive?: (id: string | undefined) => void;
 }
 
-const GalleryImage:FC<GalleryImageProps> = ({ photo, gridSize, handleActive }) => {
+const GalleryImage:FC<GalleryImageProps> = ({ photo, gridSize, active, handleActive=() => { /* */} }) => {
 
-    const [active, setActive] = useState<boolean>(false);
+    // const [active, setActive] = useState<boolean>(false);
 
-    const [ref] = useAutoAnimate();
-    useDetectOutsideClick(ref as RefObject<HTMLDivElement>, () => setActive(false));
+    // const [ref] = useAutoAnimate();
+    // useDetectOutsideClick(ref as RefObject<HTMLDivElement>, () => setActive(false));
 
     const imgClasses = classNames(
         "relative aspect-square overflow-hidden",
@@ -28,12 +29,15 @@ const GalleryImage:FC<GalleryImageProps> = ({ photo, gridSize, handleActive }) =
     );
 
     const handleClick = () => {
-        const prev = active;
-        setActive(!prev);
 
-        if (!prev && gridSize > 1 && handleActive) {
-            handleActive(photo.id)
-        }
+        if (!active) handleActive(photo.id);
+        else handleActive(undefined);
+
+        // if (!prev && gridSize > 1 && handleActive) {
+        //     handleActive(photo.id)
+        // } else if (handleActive) {
+        //     handleActive(undefined);
+        // }
     }
 
     // const containerClasses = classNames(

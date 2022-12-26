@@ -55,7 +55,12 @@ const Gallery: FC<GalleryProps> = ({ photos, tags }) => {
         <main>
             <TagMenu tags={tags} handleClick={filterItems}/>
 
-            <GridSizeSelector handleChange={(size: number) => setGridSize(size) }/>
+            <GridSizeSelector 
+                handleChange={(size: number) => {
+                    setGridSize(size);
+                    setActiveImage(undefined);
+                } }
+            />
 
             <div className={galleryClasses} ref={animateRef as RefObject<HTMLDivElement>}>
                 {filteredImages.map((photo, index) => (
@@ -64,11 +69,12 @@ const Gallery: FC<GalleryProps> = ({ photos, tags }) => {
                         key={`gallery-${index}`}
                         gridSize={gridSize}
                         handleActive={handleActive}
+                        active={activeImage?.id === photo.id}
                     />)
                 )}
             </div>
 
-            {activeImage &&
+            {activeImage && gridSize > 1 &&
                 <div 
                     ref={ref as RefObject<HTMLDivElement>}
                     className="absolute top-0 left-0 w-64 h-64 border-4 border-black"
@@ -76,6 +82,7 @@ const Gallery: FC<GalleryProps> = ({ photos, tags }) => {
                     <GalleryImage 
                         photo={activeImage}
                         gridSize={gridSize}
+                        active={false}
                     />
                 </div>
             }
