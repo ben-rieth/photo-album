@@ -1,4 +1,4 @@
-import { RefObject, type FC } from "react";
+import type { RefObject, FC } from "react";
 import Image from 'next/image';
 import classNames from "classnames";
 import type { PhotoWithUrl } from "../../types/Photo";
@@ -19,6 +19,8 @@ const GalleryImage:FC<GalleryImageProps> = ({ photo, gridSize, active, handleAct
     const [ref] = useAutoAnimate();
     // useDetectOutsideClick(ref as RefObject<HTMLDivElement>, () => setActive(false));
 
+    const executeScroll = () => ref.current?.scrollIntoView();
+
     const imgClasses = classNames(
         "relative aspect-square overflow-hidden",
         {
@@ -28,15 +30,11 @@ const GalleryImage:FC<GalleryImageProps> = ({ photo, gridSize, active, handleAct
     );
 
     const handleClick = () => {
-
-        if (!active) handleActive(photo.id);
+        if (!active) {
+            executeScroll();
+            handleActive(photo.id);
+        }
         else handleActive(undefined);
-
-        // if (!prev && gridSize > 1 && handleActive) {
-        //     handleActive(photo.id)
-        // } else if (handleActive) {
-        //     handleActive(undefined);
-        // }
     }
 
     // const containerClasses = classNames(
