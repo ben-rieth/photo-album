@@ -1,30 +1,26 @@
-import { type FC, useState, type RefObject } from 'react';
+import { type FC, useState, type RefObject, useRef } from 'react';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import GalleryImage from './GalleryImage';
 
 import classNames from 'classnames';
 import GridSizeSelector from './GridSizeSelector';
 import TagMenu from './TagMenu';
-
-type Photo = {
-    url: string;
-    tags: string[];
-    createdAt: string;
-}
+import type { PhotoWithUrl } from '../../types/Photo';
+import useDetectOutsideClick from '../../hooks/useDetectOutsideClick';
 
 type GalleryProps = {
-    photos: {
-        url: string;
-        tags: string[];
-        createdAt: string;
-    }[];
+    photos: PhotoWithUrl[];
     tags: string[];
 }
 
 const Gallery: FC<GalleryProps> = ({ photos, tags }) => {
 
-    const [filteredImages, setFilteredImages] = useState<Photo[]>(photos);
+    const [filteredImages, setFilteredImages] = useState<PhotoWithUrl[]>(photos);
     const [gridSize, setGridSize] = useState<number>(1);
+    const [activeImage, setActiveImage] = useState<PhotoWithUrl | undefined>(undefined);
+
+    const ref = useRef<HTMLDivElement>();
+    useDetectOutsideClick(ref as RefObject<HTMLDivElement>, () => setActiveImage(undefined));
 
     const filterItems = async (filter: string | undefined) => {
         setFilteredImages([]);
@@ -42,7 +38,7 @@ const Gallery: FC<GalleryProps> = ({ photos, tags }) => {
     const [animateRef] = useAutoAnimate();
 
     const galleryClasses = classNames(
-        "relative grid gap-3 mx-3 my-3",
+        "relative grid gap-3 mx-5 my-3",
         {
             "grid-cols-1": gridSize === 1,
             "grid-cols-2": gridSize === 2,
@@ -50,6 +46,10 @@ const Gallery: FC<GalleryProps> = ({ photos, tags }) => {
             "grid-cols-4": gridSize === 4,
         }
     );
+
+    const handleActive = (id: string | undefined) => {
+        setActiveImage(photos.find(photo => photo.id === id));
+    }
 
     return (
         <main>
@@ -60,12 +60,25 @@ const Gallery: FC<GalleryProps> = ({ photos, tags }) => {
             <div className={galleryClasses} ref={animateRef as RefObject<HTMLDivElement>}>
                 {filteredImages.map((photo, index) => (
                     <GalleryImage 
-                        url={photo.url} 
+                        photo={photo}
                         key={`gallery-${index}`}
                         gridSize={gridSize}
+                        handleActive={handleActive}
                     />)
                 )}
             </div>
+
+            {activeImage &&
+                <div 
+                    ref={ref as RefObject<HTMLDivElement>}
+                    className="absolute top-0 left-0 w-64 h-64 border-4 border-black"
+                >
+                    <GalleryImage 
+                        photo={activeImage}
+                        gridSize={gridSize}
+                    />
+                </div>
+            }
         </main>
     )
 };
