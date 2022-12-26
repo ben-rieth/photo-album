@@ -1,4 +1,5 @@
-import type { FC } from "react"
+import classNames from "classnames";
+import { type FC, useState } from "react"
 
 type TagMenuProps = {
     tags: string[];
@@ -6,10 +7,14 @@ type TagMenuProps = {
 }
 
 const TagMenu:FC<TagMenuProps> = ({ tags, handleClick }) => {
+    const optionClasses = classNames(
+        "w-fit bg-sky-400 rounded-2xl py-2 px-4 cursor-pointer hover:bg-white hover:ring-2 hover:ring-sky-400"
+    );
+    
     return (
-        <ul>
+        <ul className="mx-5 flex flex-wrap content-center justify-start gap-5">
             {tags.map((tag) => (
-                <li key={tag}>
+                <li key={tag} className={optionClasses}>
                     <button 
                         onClick={() => handleClick(tag)}
                     >
@@ -17,7 +22,7 @@ const TagMenu:FC<TagMenuProps> = ({ tags, handleClick }) => {
                     </button>
                 </li>
             ))}
-            <li>
+            <li className={optionClasses}>
                 <button onClick={() => handleClick(undefined)}>
                     None
                 </button>
