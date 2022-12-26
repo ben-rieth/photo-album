@@ -9,7 +9,8 @@ import GalleryHeader from './GalleryHeader';
 import useDontScrollOnCondition from '../../hooks/useDontScrollOnCondition';
 import ImageModal from './ImageModal';
 import { useAtom } from 'jotai';
-import { filterAtom, tagsAtom } from '../../store/filter';
+import { filterAtom, gridAtom, tagsAtom } from '../../store/filter';
+import TagMenu from './TagMenu';
 
 type GalleryProps = {
     photos: PhotoWithUrl[];
@@ -20,11 +21,11 @@ type GalleryProps = {
 const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
 
     const [filteredImages, setFilteredImages] = useState<PhotoWithUrl[]>(photos);
-    const [gridSize, setGridSize] = useState<number>(1);
     const [activeImage, setActiveImage] = useState<PhotoWithUrl | undefined>(undefined);
 
     const [filter, setFilter] = useAtom(filterAtom);
     const [, setTags] = useAtom(tagsAtom);
+    const [gridSize] = useAtom(gridAtom);
 
     // on initial load set the filter to undefined and the tags to the album tags
     useEffect(() => {
@@ -56,7 +57,7 @@ const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
     }
 
     const galleryClasses = classNames(
-        "relative grid gap-3 mx-5 my-3",
+        "relative grid gap-3 mx-5 my-3 flex-1",
         {
             "grid-cols-1": gridSize === 1,
             "grid-cols-2": gridSize === 2,
@@ -68,25 +69,23 @@ const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
     return (
         <main>
             <GalleryHeader title={name} />
-
-            <GridSizeSelector 
-                handleChange={(size: number) => {
-                    setGridSize(size);
-                    setActiveImage(undefined);
-                } }
-            />
-
-            <div className={galleryClasses} ref={animateRef as RefObject<HTMLDivElement>}>
-                {filteredImages.map((photo, index) => (
-                    <GalleryImage 
-                        photo={photo}
-                        key={`gallery-${index}`}
-                        gridSize={gridSize}
-                        handleActive={handleActive}
-                        active={activeImage?.id === photo.id}
-                    />)
-                )}
+            <div className="flex">
+                <aside className="w-64 hidden md:block">
+                    <TagMenu />
+                </aside>
+                <div className={galleryClasses} ref={animateRef as RefObject<HTMLDivElement>}>
+                    {filteredImages.map((photo, index) => (
+                        <GalleryImage 
+                            photo={photo}
+                            key={`gallery-${index}`}
+                            gridSize={gridSize}
+                            handleActive={handleActive}
+                            active={activeImage?.id === photo.id}
+                        />)
+                    )}
+                </div>
             </div>
+            
 
             <ImageModal 
                 photo={activeImage} 

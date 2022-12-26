@@ -1,15 +1,15 @@
 import { type FC } from "react";
 import classNames from "classnames";
 import { AiOutlineClose } from 'react-icons/ai';
-import TagMenu from "../gallery/TagMenu";
 import useDontScrollOnCondition from "../../hooks/useDontScrollOnCondition";
 
 type DrawerProps = {
     open: boolean;
+    children: JSX.Element | JSX.Element[];
     handleClose: () => void;
 }
 
-const Drawer:FC<DrawerProps> = ({ open, handleClose }) => {
+const Drawer:FC<DrawerProps> = ({ open, handleClose, children }) => {
     
     useDontScrollOnCondition(open);
 
@@ -44,8 +44,8 @@ const Drawer:FC<DrawerProps> = ({ open, handleClose }) => {
     return (
         <>
             <aside className={drawerClasses}>
-                <ul className="mt-20 ml-14 text-3xl md:text-5xl w-64">
-                    <TagMenu />
+                <ul className="mt-20 ml-14 text-3xl w-64">
+                    {children}
                 </ul>
             </aside>
             <AiOutlineClose 

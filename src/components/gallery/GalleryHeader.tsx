@@ -3,6 +3,8 @@ import { useState, type FC } from "react";
 import { AiOutlineLeft } from 'react-icons/ai';
 import { IoOptionsOutline } from 'react-icons/io5';
 import Drawer from "../general/Drawer";
+import GridSizeSelector from "./GridSizeSelector";
+import TagMenu from "./TagMenu";
 
 type GalleryHeaderProps = {
     title: string;
@@ -20,14 +22,17 @@ const GalleryHeader:FC<GalleryHeaderProps> = ({ title }) => {
                 {title}
             </h1>
             <IoOptionsOutline 
-                className="w-8 h-8" 
+                className="w-8 h-8 md:hidden" 
                 onClick={() => setDrawerOpen(true)}
             />
 
             <Drawer 
                 open={drawerOpen} 
                 handleClose={() => setDrawerOpen(false)} 
-            />
+            >
+                <TagMenu />
+                <GridSizeSelector />
+            </Drawer>
         </header>
     )
 };

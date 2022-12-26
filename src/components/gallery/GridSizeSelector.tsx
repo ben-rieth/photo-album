@@ -1,49 +1,68 @@
 import { TfiLayoutGrid2, TfiLayoutGrid3, TfiLayoutGrid4 } from 'react-icons/tfi';
 import { BiSquare } from 'react-icons/bi';
-import type { FC } from 'react';
 import classNames from 'classnames';
+import { useAtom } from 'jotai';
+import { gridAtom } from '../../store/filter';
 
-type GridSizeSelectorProps = {
-    handleChange: (size: number) => void;
-};
+const GridSizeSelector = () => {
 
-const GridSizeSelector:FC<GridSizeSelectorProps> = ({ handleChange }) => {
+    const [gridSize, setGridSize] = useAtom(gridAtom);
 
-    const classes = classNames(
-        "cursor-pointer border-2 border-sky-500 w-10 h-10 items-center justify-center"
-    );
+    const iconClasses = (sizeOption: number) => {
+        return classNames(
+            "pointer-events-none w-8 h-8",
+            {
+                "fill-black": sizeOption !== gridSize,
+                "fill-sky-500": sizeOption === gridSize,
+            }
+        );
+    }
 
-    const iconClasses = classNames(
-        "w-5 h-5 pointer-events-none"
-    );
+    const liClasses = (sizeOption: number) => {
+
+        return classNames(
+            "cursor-pointer gap-3 items-center",
+            {
+                "text-black": sizeOption !== gridSize,
+                "text-sky-500": sizeOption === gridSize,
+            }
+        );
+    }
 
     return (
-        <ul className="flex justify-around items-center">
-            <li 
-                className={`lg:hidden flex ${classes}`} 
-                onClick={() => handleChange(1)}
-            >
-                <BiSquare className={iconClasses}/>
-            </li>
-            <li 
-                className={`flex ${classes}`} 
-                onClick={() => handleChange(2)}
-            >
-                <TfiLayoutGrid2 className={iconClasses}/>
-            </li>
-            <li 
-                className={`hidden md:flex ${classes}`} 
-                onClick={() => handleChange(3)}
-            >
-                <TfiLayoutGrid3 className={iconClasses}/>
-            </li>
-            <li 
-                className={`hidden xl:flex ${classes}`} 
-                onClick={() => handleChange(4)}
-            >
-                <TfiLayoutGrid4 className={iconClasses}/>
-            </li>
-        </ul>
+        <div className="w-fit">
+            <p className="text-black">Select Grid Size</p>
+            <ul className="flex flex-col gap-2">
+                <li 
+                    className={`lg:hidden flex ${liClasses(1)}`} 
+                    onClick={() => setGridSize(1)}
+                >
+                    <BiSquare className={iconClasses(1)}/>
+                    <p>One Column</p>
+                </li>
+                <li 
+                    className={`flex ${liClasses(2)}`} 
+                    onClick={() => setGridSize(2)}
+                >
+                    <TfiLayoutGrid2 className={iconClasses(2)}/>
+                    <p>Two Columns</p>
+                </li>
+                <li 
+                    className={`hidden md:flex ${liClasses(3)}`} 
+                    onClick={() => setGridSize(3)}
+                >
+                    <TfiLayoutGrid3 className={iconClasses(3)}/>
+                    <p>Three Columns</p>
+                </li>
+                <li 
+                    className={`hidden xl:flex ${liClasses(4)}`} 
+                    onClick={() => setGridSize(4)}
+                >
+                    <TfiLayoutGrid4 className={iconClasses(4)}/>
+                    <p>Four Columns</p>
+                </li>
+            </ul>
+        </div>
     )
 }
 

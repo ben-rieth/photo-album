@@ -1,6 +1,5 @@
-import classNames from "classnames";
 import { useAtom } from "jotai";
-import { ChangeEvent, type FC } from "react";
+import { type ChangeEvent } from "react";
 import { filterAtom, tagsAtom } from "../../store/filter";
 
 const TagMenu = () => {
@@ -9,7 +8,6 @@ const TagMenu = () => {
     const [tags] = useAtom(tagsAtom);
 
     const onValueChange = (event: ChangeEvent<HTMLInputElement>) => {
-        console.log(event.target.id);
         if (event.target.id === 'none') {
             setFilter(undefined);
             return;
