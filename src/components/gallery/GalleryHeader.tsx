@@ -15,9 +15,6 @@ const GalleryHeader:FC<GalleryHeaderProps> = ({ title }) => {
     
     return (
         <header className="flex items-center gap-2 px-2 py-2 mb-3">
-            <Link href='/'>
-                <AiOutlineLeft className="w-6 h-6"/>
-            </Link>
             <h1 className="text-2xl md:text-4xl flex-1">
                 {title}
             </h1>

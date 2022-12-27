@@ -15,25 +15,31 @@ datasource db {
 }
 
 model Photo {
-  id        String   @id @default(cuid())
-  albumId   String
-  filename  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  tags      String[] 
+  id             String   @id @default(cuid())
+  filename       String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  tags           String[] 
+  caption        String?
 
-  album   Album      @relation(fields: [albumId], references: [id])
+  albumId        String
+  album          Album    @relation("All", fields: [albumId], references: [id])
+
+  featuringAlbum Album?    @relation("Featured")
 }
 
 model Album {
-  id        String   @id @default(cuid())
-  name      String
-  users     User[]
-  photos    Photo[]
-  tags      String[]
+  id             String   @id @default(cuid())
+  name          String
+  users         User[]
+  photos        Photo[]   @relation("All")
+  tags          String[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  featureId     String?   @unique
+  featuredPhoto Photo?    @relation("Featured", fields: [featureId], references: [id])
 }
 
 model Whitelist {
