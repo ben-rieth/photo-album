@@ -11,6 +11,7 @@ import { useAtom } from 'jotai';
 import { filterAtom, gridAtom, tagsAtom } from '../../store/filter';
 import TagMenu from './TagMenu';
 import type { Photo } from '@prisma/client';
+import useDimensions from '../../hooks/useDimensions';
 
 type GalleryProps = {
     photos: Photo[];
@@ -25,7 +26,7 @@ const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
 
     const [filter, setFilter] = useAtom(filterAtom);
     const [, setTags] = useAtom(tagsAtom);
-    const [gridSize] = useAtom(gridAtom);
+    const [gridSize, setGridSize] = useAtom(gridAtom);
 
     // on initial load set the filter to undefined and the tags to the album tags
     useEffect(() => {
@@ -46,6 +47,16 @@ const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
             }
         }, 250)
     }, [filter, photos]);
+
+    const { width } = useDimensions();
+
+    useEffect(() => {
+        if (width < 440) setGridSize(1);
+        else if (width >= 440 && width < 768) setGridSize(2)
+        else if (width >= 768 && width < 1024) setGridSize(3);
+        else if (width >= 1024) setGridSize(4);
+        
+    }, [width, setGridSize])
 
     const [animateRef] = useAutoAnimate();
 
