@@ -1,6 +1,8 @@
 import { decode } from "base64-arraybuffer";
 import { nanoid } from "nanoid";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { getPlaiceholder } from "plaiceholder";
+import { env } from "../../../env/server.mjs";
 import { supabase, prisma } from "../../../server/db/client";
 
 export const config = {
@@ -47,10 +49,15 @@ const handler = async(req: NextApiRequest, res: NextApiResponse) => {
         }
 
         try {
+            const url = `${env.SUPABASE_STORAGE_URL}/albums/${albumId}/${path}`;
+
+            const { base64 } = await getPlaiceholder(url);
+
             await prisma.photo.create({
                 data: {
                     albumId,
-                    filename: path,
+                    url,
+                    placeholder: base64,
                 }
             });
 

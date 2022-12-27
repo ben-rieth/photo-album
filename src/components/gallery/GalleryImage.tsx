@@ -1,12 +1,11 @@
 import type { RefObject, FC } from "react";
 import Image from 'next/image';
 import classNames from "classnames";
-import type { PhotoWithUrl } from "../../types/Photo";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
+import type { Photo } from "@prisma/client";
 
 type GalleryImageProps = {
-    photo: PhotoWithUrl
-    position?: "left" | "center" | "right";
+    photo: Photo
     gridSize: number;
     active: boolean;
     handleActive?: (id: string | undefined) => void;
@@ -47,7 +46,7 @@ const GalleryImage:FC<GalleryImageProps> = ({ photo, gridSize, active, handleAct
                     alt=""
                     fill
                     className="object-cover"
-                    placeholder={photo.placeholder ? "blur" : "empty"}
+                    placeholder="blur"
                     blurDataURL={photo.placeholder}
                 />
             </div>

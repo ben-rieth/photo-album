@@ -4,24 +4,24 @@ import GalleryImage from './GalleryImage';
 
 import classNames from 'classnames';
 import GridSizeSelector from './GridSizeSelector';
-import type { PhotoWithUrl } from '../../types/Photo';
 import GalleryHeader from './GalleryHeader';
 import useDontScrollOnCondition from '../../hooks/useDontScrollOnCondition';
 import ImageModal from './ImageModal';
 import { useAtom } from 'jotai';
 import { filterAtom, gridAtom, tagsAtom } from '../../store/filter';
 import TagMenu from './TagMenu';
+import type { Photo } from '@prisma/client';
 
 type GalleryProps = {
-    photos: PhotoWithUrl[];
+    photos: Photo[];
     tags: string[];
     name: string;
 }
 
 const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
 
-    const [filteredImages, setFilteredImages] = useState<PhotoWithUrl[]>(photos);
-    const [activeImage, setActiveImage] = useState<PhotoWithUrl | undefined>(undefined);
+    const [filteredImages, setFilteredImages] = useState<Photo[]>(photos);
+    const [activeImage, setActiveImage] = useState<Photo | undefined>(undefined);
 
     const [filter, setFilter] = useAtom(filterAtom);
     const [, setTags] = useAtom(tagsAtom);

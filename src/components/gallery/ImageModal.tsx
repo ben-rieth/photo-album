@@ -1,10 +1,10 @@
+import type { Photo } from "@prisma/client";
 import { type FC, type RefObject, useRef } from "react";
 import useDetectOutsideClick from "../../hooks/useDetectOutsideClick";
-import type { PhotoWithUrl } from "../../types/Photo"
 import GalleryImage from "./GalleryImage";
 
 type ImageModalProps = {
-    photo: PhotoWithUrl | undefined;
+    photo: Photo | undefined;
     isOpen: boolean;
     onClose: () => void;
 }

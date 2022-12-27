@@ -1,13 +1,11 @@
+import type { Photo } from "@prisma/client";
 import type { GetServerSideProps, NextPage } from "next";
-import { getPlaiceholder } from "plaiceholder";
 import Gallery from "../../components/gallery/Gallery";
-import { env } from "../../env/server.mjs";
 import { getServerAuthSession } from "../../server/common/get-server-auth-session";
 import { prisma } from '../../server/db/client';
-import type { PhotoWithUrl } from "../../types/Photo";
 
 type AlbumPageProps = {
-    photos: PhotoWithUrl[];
+    photos: Photo[];
     tags: string[];
     name: string;
 }
@@ -49,24 +47,9 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
         };
     }
 
-    const photos : PhotoWithUrl[] = await Promise.all(album.photos.map(async (photo) => {
-        const url = `${env.SUPABASE_STORAGE_URL}/albums/${slug}/${photo.filename}`;
-        
-        const { base64 } = await getPlaiceholder(url);
-
-        return {
-            id: photo.id,
-            tags: photo.tags,
-            updatedAt: photo.updatedAt.toISOString(),
-            createdAt: photo.createdAt.toISOString(),
-            url,
-            placeholder: base64,
-        }
-    }));
-
     return {
         props: {
-            photos,
+            photos: JSON.parse(JSON.stringify(album.photos)),
             tags: album.tags,
             name: album.name,
         }
