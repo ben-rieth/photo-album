@@ -19,7 +19,7 @@ const GalleryHeader:FC<GalleryHeaderProps> = ({ title }) => {
                 {title}
             </h1>
             <IoOptionsOutline 
-                className="w-8 h-8 md:hidden" 
+                className="w-8 h-8 md:hidden cursor-pointer" 
                 onClick={() => setDrawerOpen(true)}
             />
             <ul className="hidden md:flex text-2xl">
