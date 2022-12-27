@@ -57,7 +57,7 @@ const AlbumCover:FC<AlbumCoverProps> = ({ coverPhoto, name, albumId }) => {
                     />
                     ) : ( null )
                 }
-                <h3 className="font-semibold text-center text-2xl 2xl:text-3xl my-1 group-hover:text-sky-500 text-black">
+                <h3 className="font-semibold font-handwriting text-center text-2xl 2xl:text-3xl my-1 group-hover:text-sky-500 text-black">
                     {name}
                 </h3>
             </div>

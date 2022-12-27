@@ -1,4 +1,5 @@
 import { type AppType } from "next/app";
+import { Merienda } from '@next/font/google';
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import NextNProgress from 'nextjs-progressbar';
@@ -6,6 +7,8 @@ import NextNProgress from 'nextjs-progressbar';
 import "../styles/globals.css";
 import { Toaster } from "react-hot-toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const merienda = Merienda({ subsets: ['latin'], variable: '--font-merienda', display: 'swap'})
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -16,10 +19,12 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <QueryClientProvider client={queryClient}>
       <SessionProvider session={session}>
+        <div className={`${merienda.variable} font-sans`}>
+          <Component {...pageProps} />
+        </div>
         
-        <Component {...pageProps} />
+        <NextNProgress options={{ showSpinner: false }}/>
         <Toaster />
-        <NextNProgress />
 
       </SessionProvider>
     </QueryClientProvider>

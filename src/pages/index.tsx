@@ -10,7 +10,7 @@ const Home: NextPage = () => {
       return (
         <>
           <header className="flex mx-2">
-            <h1 className="text-2xl md:text-4xl flex-1">Albums List</h1>
+            <h1 className="text-2xl md:text-4xl flex-1 font-handwriting">Albums List</h1>
             <button 
               className="text-lg"
               onClick={() => signOut()}
@@ -19,7 +19,6 @@ const Home: NextPage = () => {
             </button>
           </header>
           <AlbumsList />
-          
         </>
         
       );

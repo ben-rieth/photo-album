@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { useState, type FC } from "react";
-import { AiOutlineLeft } from 'react-icons/ai';
 import { IoOptionsOutline } from 'react-icons/io5';
 import Drawer from "../general/Drawer";
 import GridSizeSelector from "./GridSizeSelector";
@@ -15,7 +14,7 @@ const GalleryHeader:FC<GalleryHeaderProps> = ({ title }) => {
     
     return (
         <header className="flex items-center gap-2 px-2 py-2 mb-3">
-            <h1 className="text-2xl md:text-4xl flex-1">
+            <h1 className="text-2xl md:text-4xl flex-1 font-handwriting">
                 {title}
             </h1>
             <IoOptionsOutline 
