@@ -66,8 +66,15 @@ const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
         },
     );
 
+    const mainClasses = classNames(
+        "relative",
+        {
+            "md:w-full": activeImage
+        }
+    )
+
     return (
-        <main className="md:w-full relative">
+        <main className={mainClasses}>
             <GalleryHeader title={name} />
             <div className="md:flex relative">
                 <aside className="basis-64 shrink-0 hidden md:block px-5 sticky top-5 h-fit">
@@ -87,7 +94,6 @@ const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
                     )}
                 </div>
             </div>
-            
             <ImageModal 
                 photo={activeImage} 
                 isOpen={!!activeImage && gridSize > 1}
