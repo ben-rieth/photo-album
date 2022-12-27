@@ -51,10 +51,25 @@ const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
     const { width } = useDimensions();
 
     useEffect(() => {
-        if (width < 440) setGridSize(1);
-        else if (width >= 440 && width < 768) setGridSize(2)
-        else if (width >= 768 && width < 1024) setGridSize(3);
-        else if (width >= 1024) setGridSize(4);
+
+        let changeTo: number;
+        if (width < 440) changeTo = 1;
+        else if (width >= 440 && width < 768) changeTo = 2;
+        else if (width >= 768 && width < 1024) changeTo = 3;
+        else if (width >= 1024) changeTo = 4;
+
+        setGridSize(prev => {
+            if (
+                prev === 1 && changeTo === 2 
+                || prev == 2 && changeTo === 1
+            ) {
+                setActiveImage(undefined);
+            }
+                
+            return changeTo;
+        })
+
+
         
     }, [width, setGridSize])
 
