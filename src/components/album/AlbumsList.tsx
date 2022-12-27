@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { env } from "../../env/client.mjs";
 import axios from "axios";
-import type { Album } from "@prisma/client";
-import Link from 'next/link';
+import type { Album, Photo } from "@prisma/client";
+import AlbumCover from './AlbumCover';
 
 const AlbumsList = () => {
     
-    const { data : albums, error } = useQuery<Album[]>({
+    const { data : albums, error } = useQuery<(Album & {featuredPhoto: Photo | null})[]>({
         queryKey: ["albums"],
         queryFn: async () => {
             const { data } = await axios.get(
@@ -16,7 +16,6 @@ const AlbumsList = () => {
             return data;
         }
     });
-    console.log(error);
     if (error) {
         return <p>Error</p>
     }
@@ -25,15 +24,14 @@ const AlbumsList = () => {
         return <p>Loading...</p>
     }
     return (
-        <div>
+        <div className="mx-10 my-5 gap-5 grid grid-cols-1 sm:grid-cols-2">
             {albums.map((album) => (
-                <Link
-                    href={`/albums/${album.id}`}
+                <AlbumCover 
                     key={album.id}
-                >
-                    <p>{album.name}</p>
-                </Link>
-                
+                    coverPhoto={album.featuredPhoto}
+                    name={album.name}
+                    albumId={album.id}
+                />
             ))}
         </div>
     )

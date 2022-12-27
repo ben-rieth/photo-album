@@ -1,3 +1,4 @@
+import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerAuthSession } from "../../../server/common/get-server-auth-session";
 
@@ -26,7 +27,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             const userWithAlbums = await prisma.user.findFirst({
                 where: { id: userId },
                 include: { 
-                    albums: true 
+                    albums: {
+                        include: {
+                            featuredPhoto: true,
+                        }
+                    }
                 }
             });
 

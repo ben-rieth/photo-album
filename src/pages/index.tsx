@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import { signOut, useSession } from "next-auth/react";
 import AuthForm from "../components/auth/AuthForm";
-import AlbumsList from "../components/gallery/AlbumsList";
+import AlbumsList from "../components/album/AlbumsList";
 
 const Home: NextPage = () => {
     const { data: session } = useSession();
@@ -9,8 +9,17 @@ const Home: NextPage = () => {
     if (session) {
       return (
         <>
+          <header className="flex mx-2">
+            <h1 className="text-2xl md:text-4xl flex-1">Albums List</h1>
+            <button 
+              className="text-lg"
+              onClick={() => signOut()}
+            >
+              Sign Out
+            </button>
+          </header>
           <AlbumsList />
-          <button onClick={() => signOut()}>Sign Out</button>
+          
         </>
         
       );

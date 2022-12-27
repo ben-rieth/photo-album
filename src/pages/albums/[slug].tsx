@@ -1,20 +1,19 @@
 import type { GetServerSideProps, NextPage } from "next";
-import AddImage from "../../components/gallery/AddImage";
 import Gallery from "../../components/gallery/Gallery";
+import { env } from "../../env/server.mjs";
 import { getServerAuthSession } from "../../server/common/get-server-auth-session";
-import { prisma, supabase } from '../../server/db/client';
+import { prisma } from '../../server/db/client';
+import type { PhotoWithUrl } from "../../types/Photo";
 
 type AlbumPageProps = {
-    urls: string[];
-    albumId: string;
+    photos: PhotoWithUrl[];
+    tags: string[];
+    name: string;
 }
 
-const AlbumPage: NextPage<AlbumPageProps> = ({ urls, albumId }) => {
+const AlbumPage: NextPage<AlbumPageProps> = ({ photos, name, tags }) => {
     return (
-        <>
-            <AddImage albumId={albumId} />
-            <Gallery urls={urls}/>
-        </>
+        <Gallery photos={photos} tags={tags} name={name} />
     );
 }
 
@@ -35,21 +34,34 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
 
     const slug = params.slug as string;
 
-    const pictures = await prisma.photo.findMany({
-        where: { albumId: slug }
+    const album = await prisma.album.findUnique({
+        where: { id: slug },
+        include: { photos: true }
     });
 
-    const folderUrls = pictures ? pictures.map(picture => `${slug}/${picture.filename}`) : [];
-    
-    const { data } = await supabase
-        .storage.from('albums')
-        .createSignedUrls(folderUrls, 3600);
+    if (!album) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            }
+        };
+    }
 
-    const urls = data ? data.map((obj) => obj.signedUrl) : [];
+    const photos : PhotoWithUrl[] = album.photos.map(photo => {
+        return {
+            id: photo.id,
+            tags: photo.tags,
+            updatedAt: photo.updatedAt.toISOString(),
+            createdAt: photo.createdAt.toISOString(),
+            url: `${env.SUPABASE_STORAGE_URL}/albums/${slug}/${photo.filename}`
+        }});
+
     return {
         props: {
-            urls,
-            albumId: slug
+            photos,
+            tags: album.tags,
+            name: album.name,
         }
     }
 }
