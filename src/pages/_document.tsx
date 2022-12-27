@@ -5,7 +5,7 @@ const Document = () => {
     return (
         <Html className="scroll-smooth">
             <Head />
-            <body className="w-screen h-screen">
+            <body className="h-screen">
                 <Main />
                 <NextScript />
             </body>

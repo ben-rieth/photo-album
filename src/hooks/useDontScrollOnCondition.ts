@@ -3,13 +3,9 @@ import { useEffect } from "react";
 const useDontScrollOnCondition = (condition: boolean) => {
     useEffect(() => {
         if (condition) {
-            document.body.style.position = 'fixed';
-            document.body.style.top = `-${window.scrollY}px`;
+            document.body.style.overflow = 'hidden';
         } else {
-            const scrollY = document.body.style.top;
-            document.body.style.position = '';
-            document.body.style.top = '';
-            window.scrollTo(0, parseInt(scrollY || '0') * -1);
+            document.body.style.overflow = 'visible';
         }
     }, [condition])
 }

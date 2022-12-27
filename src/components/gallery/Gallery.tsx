@@ -57,7 +57,7 @@ const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
     }
 
     const galleryClasses = classNames(
-        "grid md:flex-1 mx-5",
+        "grid flex-1 mx-5",
         {
             "grid-cols-1 gap-5": gridSize === 1,
             "grid-cols-2 gap-5": gridSize === 2,
@@ -67,10 +67,7 @@ const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
     );
 
     const mainClasses = classNames(
-        "relative",
-        {
-            "md:w-full": activeImage
-        }
+        "relative"
     )
 
     return (
