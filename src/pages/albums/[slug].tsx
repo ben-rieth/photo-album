@@ -1,4 +1,5 @@
 import type { GetServerSideProps, NextPage } from "next";
+import { getPlaiceholder } from "plaiceholder";
 import Gallery from "../../components/gallery/Gallery";
 import { env } from "../../env/server.mjs";
 import { getServerAuthSession } from "../../server/common/get-server-auth-session";
@@ -48,14 +49,20 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req, res 
         };
     }
 
-    const photos : PhotoWithUrl[] = album.photos.map(photo => {
+    const photos : PhotoWithUrl[] = await Promise.all(album.photos.map(async (photo) => {
+        const url = `${env.SUPABASE_STORAGE_URL}/albums/${slug}/${photo.filename}`;
+        
+        const { base64 } = await getPlaiceholder(url);
+
         return {
             id: photo.id,
             tags: photo.tags,
             updatedAt: photo.updatedAt.toISOString(),
             createdAt: photo.createdAt.toISOString(),
-            url: `${env.SUPABASE_STORAGE_URL}/albums/${slug}/${photo.filename}`
-        }});
+            url,
+            placeholder: base64,
+        }
+    }));
 
     return {
         props: {

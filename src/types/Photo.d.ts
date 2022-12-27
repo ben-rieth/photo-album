@@ -4,4 +4,5 @@ export type PhotoWithUrl = {
     createdAt: string,
     updatedAt: string,
     tags: string[]
+    placeholder?: string
 };

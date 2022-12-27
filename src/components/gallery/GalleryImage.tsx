@@ -47,6 +47,8 @@ const GalleryImage:FC<GalleryImageProps> = ({ photo, gridSize, active, handleAct
                     alt=""
                     fill
                     className="object-cover"
+                    placeholder={photo.placeholder ? "blur" : "empty"}
+                    blurDataURL={photo.placeholder}
                 />
             </div>
             {active && gridSize === 1 &&

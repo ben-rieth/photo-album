@@ -19,7 +19,7 @@ const AlbumCover:FC<AlbumCoverProps> = ({ coverPhoto, name, albumId }) => {
     useEffect(() => {
         (async () => {
             if (coverPhoto) {
-                console.log(typeof coverPhoto.createdAt);
+                
                 try {
                     const data = await axios.post(
                         `${env.NEXT_PUBLIC_URL}/api/photo/generateUrl`,
@@ -28,13 +28,14 @@ const AlbumCover:FC<AlbumCoverProps> = ({ coverPhoto, name, albumId }) => {
                             albumId
                         }
                     ).then((res) => res.data);
-                    
+
                     setPhoto({
                         id: coverPhoto.id,
                         createdAt: coverPhoto.createdAt as unknown as string,
                         updatedAt: coverPhoto.updatedAt as unknown as string,
                         tags: coverPhoto.tags,
-                        url: data.url
+                        url: data.url,
+                        placeholder: data.placeholder
                     });
 
                 } catch(err) {

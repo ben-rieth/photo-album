@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { getPlaiceholder } from "plaiceholder";
 import * as z from 'zod';
 import { env } from "../../../env/server.mjs";
 
@@ -21,8 +22,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             });
         }
 
+        const url = `${env.SUPABASE_STORAGE_URL}/albums/${albumId}/${filename}`
+
+        const { base64 } = await getPlaiceholder(url);
+
         res.status(200).json({
-            url: `${env.SUPABASE_STORAGE_URL}/albums/${albumId}/${filename}`,
+            url,
+            placeholder: base64
         })
 
     } else {
