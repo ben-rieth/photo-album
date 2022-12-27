@@ -15,11 +15,11 @@ const TagMenu = () => {
         
         setFilter(event.target.id);
     }
-    
+
     return (
         <fieldset className="text-black">
             <legend>Filter By Tags</legend>
-            <div onChange={onValueChange}>
+            <div>
                 {tags.map((tag) => (
                     <div key={`tagOption-${tag}`} className="flex items-center gap-2">
                         <input 
@@ -27,7 +27,7 @@ const TagMenu = () => {
                             id={tag} 
                             name="photoTags"
                             checked={filter === tag}
-                            readOnly
+                            onChange={onValueChange}
                         />
                         <label htmlFor={tag}>{tag}</label>
                     </div>
@@ -37,8 +37,8 @@ const TagMenu = () => {
                         type="radio" 
                         id="none" 
                         name="photoTags"
-                        checked={!filter}
-                        readOnly
+                        checked={filter === undefined}
+                        onChange={onValueChange}
                     />
                     <label htmlFor="none">none</label>
                 </div>
