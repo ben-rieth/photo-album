@@ -50,7 +50,7 @@ const GalleryImage:FC<GalleryImageProps> = ({ photo, gridSize, active, handleAct
                 />
             </div>
             {active && gridSize === 1 &&
-                <div className="px-3 pb-3 -mt-3 text-justify rounded-b-lg border-x-2 border-b-2 border-slate-800 bg-white">
+                <div className="px-3 pb-3 -mt-5 text-justify rounded-b-lg border-x-2 border-b-2 border-slate-800 bg-white">
                     <p>Lorem ipsum laborum.</p>
                 </div>
             }

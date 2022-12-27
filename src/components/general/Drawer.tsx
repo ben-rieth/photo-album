@@ -44,7 +44,7 @@ const Drawer:FC<DrawerProps> = ({ open, handleClose, children }) => {
     return (
         <>
             <aside className={drawerClasses}>
-                <ul className="mt-20 ml-14 text-3xl w-64">
+                <ul className="mt-20 ml-14 w-64">
                     {children}
                 </ul>
             </aside>
