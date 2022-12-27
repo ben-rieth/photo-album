@@ -91,6 +91,7 @@ const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
                     )}
                 </div>
             </div>
+            <div className="h-10" />
             <ImageModal 
                 photo={activeImage} 
                 isOpen={!!activeImage && gridSize > 1}
