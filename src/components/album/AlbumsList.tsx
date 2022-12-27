@@ -6,7 +6,7 @@ import AlbumCover from './AlbumCover';
 
 const AlbumsList = () => {
     
-    const { data : albums, error } = useQuery<(Album & {featuredPhoto: Photo | null})[]>({
+    const { data : albums, error } = useQuery<(Album & {featuredPhoto: Photo})[]>({
         queryKey: ["albums"],
         queryFn: async () => {
             const { data } = await axios.get(

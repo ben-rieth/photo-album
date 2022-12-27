@@ -8,32 +8,22 @@ const main = async () => {
 
     await prisma.$transaction([deletePhotos, deleteAlbums]);
 
-    // await prisma.whitelist.create({
-    //     data: { email: 'benrieth3@gmail.com' }
-    // });
-
-    // await prisma.user.create({
+    // await prisma.album.create({
     //     data: {
-    //         email: 'benrieth3@gmail.com'
+    //         name: 'Benji & Alison',
+    //         users: {
+    //             connect: [ { email: 'benrieth3@gmail.com' }]
+    //         },
+    //         photos: {
+    //             // createMany: {
+    //             //     data: [
+    //             //         { filename: 'children.jpg' },
+    //             //         { filename: 'bus_2.jpg' }
+    //             //     ]
+    //             // }
+    //         }
     //     }
     // });
-
-    await prisma.album.create({
-        data: {
-            name: 'Benji & Alison',
-            users: {
-                connect: [ { email: 'benrieth3@gmail.com' }]
-            },
-            photos: {
-                createMany: {
-                    data: [
-                        { filename: 'children.jpg' },
-                        { filename: 'bus_2.jpg' }
-                    ]
-                }
-            }
-        }
-    });
 };
 
 main()

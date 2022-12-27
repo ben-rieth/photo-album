@@ -39,8 +39,8 @@ model Album {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  featureId     String?   @unique
-  featuredPhoto Photo?    @relation("Featured", fields: [featureId], references: [id])
+  featureId     String    @unique
+  featuredPhoto Photo     @relation("Featured", fields: [featureId], references: [id])
 }
 
 model Whitelist {

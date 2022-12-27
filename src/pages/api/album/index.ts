@@ -1,12 +1,7 @@
-import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerAuthSession } from "../../../server/common/get-server-auth-session";
 
 import { prisma } from "../../../server/db/client";
-
-// const schema = z.object({
-//     userId: z.string(),
-// })
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === 'GET') {
