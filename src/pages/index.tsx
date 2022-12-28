@@ -10,7 +10,7 @@ const Home: NextPage = () => {
     if (session) {
       return (
         <>
-          <header className="flex mx-2 mt-2 shadow-lg">
+          <header className="flex px-2 py-2 shadow-lg">
             <h1 className="text-2xl md:text-4xl flex-1 font-handwriting">Albums List</h1>
             <button 
               className="text-lg hover:text-rose-500 hover:scale-110"

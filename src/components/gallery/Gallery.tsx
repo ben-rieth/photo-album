@@ -68,10 +68,11 @@ const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
                 
             return changeTo;
         })
+    }, [width, setGridSize]);
 
-
-        
-    }, [width, setGridSize])
+    useEffect(() => {
+        setActiveImage(undefined);
+    }, [gridSize]);
 
     const [animateRef] = useAutoAnimate();
 

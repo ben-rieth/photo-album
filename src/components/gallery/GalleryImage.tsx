@@ -18,10 +18,11 @@ const GalleryImage:FC<GalleryImageProps> = ({ photo, gridSize, active, handleAct
     const executeScroll = () => ref.current?.scrollIntoView();
 
     const imgClasses = classNames(
-        "aspect-square overflow-hidden",
+        "aspect-square overflow-hidden group",
+        gridSize > 1 && active ? "cursor-default" : "cursor-pointer",
         {
             "rounded-lg": !active || gridSize > 1,
-            "rounded-t-lg": active,
+            "rounded-t-lg": active
         }
     );
 
@@ -49,6 +50,7 @@ const GalleryImage:FC<GalleryImageProps> = ({ photo, gridSize, active, handleAct
                     placeholder="blur"
                     blurDataURL={photo.placeholder}
                 />
+                
             </div>
             {active && gridSize === 1 &&
                 <div className="px-3 pb-3 -mt-5 text-justify rounded-b-lg border-x-2 border-b-2 border-slate-800 bg-white">

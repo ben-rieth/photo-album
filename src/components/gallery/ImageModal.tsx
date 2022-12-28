@@ -26,7 +26,7 @@ const ImageModal:FC<ImageModalProps> = ({ photo, isOpen, onClose }) => {
                     <GalleryImage 
                         photo={photo}
                         gridSize={2}
-                        active={false}
+                        active={true}
                     />
                 </div>
                 <p className="text-sm">Lorem ipsum</p>
