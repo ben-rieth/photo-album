@@ -16,10 +16,10 @@ const GalleryImage:FC<GalleryImageProps> = ({ photo, gridSize, active, handleAct
 
     const [ref] = useAutoAnimate();
 
-    const executeScroll = () => ref.current?.scrollIntoView();
+    const executeScroll = () => ref.current?.scrollIntoView({ block: 'center'});
 
     const imgClasses = classNames(
-        "aspect-square overflow-hidden group",
+        "aspect-square overflow-hidden group pointer-events-none",
         gridSize > 1 && active ? "cursor-default" : "cursor-pointer",
         {
             "rounded-lg": !active || gridSize > 1,
@@ -37,7 +37,7 @@ const GalleryImage:FC<GalleryImageProps> = ({ photo, gridSize, active, handleAct
 
 
     return (
-        <>
+        <div>
             <div 
                 className={imgClasses}
                 onClick={handleClick}
@@ -47,18 +47,18 @@ const GalleryImage:FC<GalleryImageProps> = ({ photo, gridSize, active, handleAct
                     src={photo.url}
                     alt=""
                     fill
-                    className="object-cover"
+                    className="object-cover pointer-events-auto snap-start"
                     placeholder="blur"
                     blurDataURL={photo.placeholder}
                 />
                 
             </div>
             {active && gridSize === 1 &&
-                <div className="px-3 pb-3 -mt-5 text-justify rounded-b-lg border-x-2 border-b-2 border-slate-800 bg-white">
+                <div className="px-3 pb-3 text-justify rounded-b-lg border-x-2 border-b-2 border-slate-800 bg-white">
                     <Caption text={photo.caption}/>
                 </div>
             }
-        </>
+        </div>
     )
 }
 
