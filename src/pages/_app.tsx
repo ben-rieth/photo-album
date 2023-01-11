@@ -1,5 +1,5 @@
 import { type AppType } from "next/app";
-import { Merienda } from '@next/font/google';
+import { Merienda, Caveat } from '@next/font/google';
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import NextNProgress from 'nextjs-progressbar';
@@ -9,6 +9,7 @@ import { Toaster } from "react-hot-toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const merienda = Merienda({ subsets: ['latin'], variable: '--font-merienda', display: 'swap'})
+const caveat = Caveat({ subsets: ['latin'], variable: '--font-caveat', adjustFontFallback: false });
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -19,7 +20,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <QueryClientProvider client={queryClient}>
       <SessionProvider session={session}>
-        <div className={`${merienda.variable} font-sans`}>
+        <div className={`${merienda.variable} ${caveat.variable} font-sans`}>
           <Component {...pageProps} />
         </div>
         

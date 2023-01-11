@@ -1,6 +1,7 @@
 import type { Photo } from "@prisma/client";
 import { type FC, type RefObject, useRef } from "react";
 import useDetectOutsideClick from "../../hooks/useDetectOutsideClick";
+import Caption from "./Caption";
 import GalleryImage from "./GalleryImage";
 
 type ImageModalProps = {
@@ -29,7 +30,7 @@ const ImageModal:FC<ImageModalProps> = ({ photo, isOpen, onClose }) => {
                         active={true}
                     />
                 </div>
-                <p className="text-sm">Lorem ipsum</p>
+                <Caption text={photo.caption}/>
             </div>
             <div className="fixed w-screen h-screen bg-black/80 z-10 top-0 left-0"/>
         </>

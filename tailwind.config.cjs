@@ -7,7 +7,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        handwriting: ['var(--font-merienda)', fontFamily.sans]
+        handwriting: ['var(--font-merienda)', fontFamily.sans],
+        scrawl: ['var(--font-caveat)', fontFamily.sans]
       }
     },
   },
