@@ -10,7 +10,7 @@ const GridSizeSelector = () => {
 
     const iconClasses = (sizeOption: number) => {
         return classNames(
-            "pointer-events-none w-8 h-8",
+            "pointer-events-none w-6 h-6",
             {
                 "fill-black": sizeOption !== gridSize,
                 "fill-sky-500": sizeOption === gridSize,
@@ -31,8 +31,8 @@ const GridSizeSelector = () => {
 
     return (
         <div className="w-fit">
-            <p className="text-black">Select Grid Size</p>
-            <ul className="flex flex-col gap-2">
+            <p className="text-black text-xl">Select Grid Size</p>
+            <ul className="flex flex-col gap-2 pl-3">
                 <li 
                     className={`lg:hidden flex ${liClasses(1)}`} 
                     onClick={() => setGridSize(1)}

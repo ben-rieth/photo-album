@@ -101,8 +101,8 @@ const Gallery: FC<GalleryProps> = ({ photos, tags, name }) => {
         <main className={mainClasses}>
             <GalleryHeader title={name} />
             <div className="md:flex relative">
-                <aside className="basis-64 shrink-0 hidden md:block px-5 sticky top-5 h-fit">
-                    <h2 className="text-3xl">Display Options</h2>
+                <aside className="basis-56 shrink-0 hidden md:block px-5 top-5 sticky h-fit">
+                    <h2 className="text-2xl">Display Options</h2>
                     <TagMenu />
                     <GridSizeSelector />
                 </aside>
