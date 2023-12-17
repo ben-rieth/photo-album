@@ -24,10 +24,6 @@ export const serverSchema = z.object({
   EMAIL_USER: z.string(),
   EMAIL_PASS: z.string(),
   EMAIL_FROM: z.string().email(),
-  SUPABASE_URL: z.string().url(),
-  SUPABASE_KEY: z.string(),
-  SUPABASE_STORAGE_URL: z.string(),
-  SUPABASE_SERVICE_KEY: z.string(),
 });
 
 /**

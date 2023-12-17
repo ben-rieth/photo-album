@@ -17,7 +17,7 @@ const config = withPlaiceholder({
     defaultLocale: "en",
   },
   images: {
-    domains: ['wrldtapbwzeyusnxrzbh.supabase.co']
+    domains: ['wrldtapbwzeyusnxrzbh.supabase.co', 'res.cloudinary.com']
   }
 });
 export default config;
