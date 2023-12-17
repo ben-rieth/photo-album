@@ -3,7 +3,7 @@ import { nanoid } from "nanoid";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getPlaiceholder } from "plaiceholder";
 import { env } from "../../../env/server.mjs";
-import { supabase, prisma } from "../../../server/db/client";
+// import { supabase, prisma } from "../../../server/db/client";
 
 export const config = {
     api: {
@@ -25,56 +25,56 @@ const handler = async(req: NextApiRequest, res: NextApiResponse) => {
         const contentType = image.match(/data:(.*);base64/)?.[1];
         const base64FileData = image.split('base64,')?.[1];
 
-        if (!contentType || !base64FileData) {
-            return res.status(400).json({ message: 'Image data not valid' });
-        }
+        // if (!contentType || !base64FileData) {
+        //     return res.status(400).json({ message: 'Image data not valid' });
+        // }
 
-        const filename = nanoid();
-        const ext =contentType.split('/')[1];
-        const path = `${filename}.${ext}`;
+        // const filename = nanoid();
+        // const ext =contentType.split('/')[1];
+        // const path = `${filename}.${ext}`;
 
-        const { error } = await supabase.storage.from('albums')
-            .upload(
-                `${albumId}/${path}`,
-                decode(base64FileData),
-                { contentType, upsert: true}
-            );
+        // const { error } = await supabase.storage.from('albums')
+        //     .upload(
+        //         `${albumId}/${path}`,
+        //         decode(base64FileData),
+        //         { contentType, upsert: true}
+        //     );
 
-        if (error) {
-            console.log("Supabase err")
-            console.log(error);
-            return res.status(500).json({
-                msg: 'Unable to upload image to database',
-            });
-        }
+        // if (error) {
+        //     console.log("Supabase err")
+        //     console.log(error);
+        //     return res.status(500).json({
+        //         msg: 'Unable to upload image to database',
+        //     });
+        // }
 
-        try {
-            const url = `${env.SUPABASE_STORAGE_URL}/albums/${albumId}/${path}`;
+        // try {
+        //     const url = `${env.SUPABASE_STORAGE_URL}/albums/${albumId}/${path}`;
 
-            const { base64 } = await getPlaiceholder(url);
+        //     const { base64 } = await getPlaiceholder(url);
 
-            await prisma.photo.create({
-                data: {
-                    albumId,
-                    url,
-                    placeholder: base64,
-                }
-            });
+        //     await prisma.photo.create({
+        //         data: {
+        //             albumId,
+        //             url,
+        //             placeholder: base64,
+        //         }
+        //     });
 
-        } catch (err) {
-            console.log(err);
+        // } catch (err) {
+        //     console.log(err);
 
-            await supabase.storage.from('albums')
-                .remove([`${albumId}/${path}`])
+        //     await supabase.storage.from('albums')
+        //         .remove([`${albumId}/${path}`])
 
-            return res.status(500).json({
-                msg: 'Error adding image to database',
-            });
-        }
+        //     return res.status(500).json({
+        //         msg: 'Error adding image to database',
+        //     });
+        // }
 
-        return res.status(200).json({
-            msg: 'Photo successfully uploaded',
-        });
+        // return res.status(200).json({
+        //     msg: 'Photo successfully uploaded',
+        // });
         
 
     } else {
